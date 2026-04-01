@@ -827,6 +827,97 @@ body.is-ready .headline-accent {
   font-size: 0.9rem;
 }
 
+.back-to-top {
+  border: 1px solid rgba(0, 52, 89, 0.2);
+  background: rgba(255, 255, 255, 0.62);
+  color: var(--turquoise);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.87rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.back-to-top:hover {
+  transform: translateY(-1px);
+  background: rgba(128, 201, 43, 0.2);
+}
+
+.contact-page-main {
+  min-height: calc(100vh - 210px);
+  padding-top: 5.4rem;
+}
+
+.contact-page-hero {
+  padding-top: 3.4rem;
+}
+
+.contact-page-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 460px);
+  gap: clamp(1.4rem, 3vw, 2.4rem);
+  align-items: start;
+}
+
+.contact-page-copy h1 {
+  margin-top: 0.55rem;
+  font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+  font-size: clamp(2.2rem, 5.3vw, 3.8rem);
+  line-height: 0.95;
+  color: #032e4d;
+}
+
+.contact-page-copy > p {
+  margin-top: 1rem;
+  max-width: 48ch;
+  line-height: 1.72;
+}
+
+.contact-meta-page {
+  margin-top: 1.3rem;
+}
+
+.contact-form {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(0, 52, 89, 0.16);
+  border-radius: var(--radius-lg);
+  padding: clamp(1rem, 2.4vw, 1.5rem);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.68rem;
+}
+
+.contact-form h2 {
+  font-family: "Bebas Neue", "Arial Narrow", sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+  color: var(--turquoise);
+}
+
+.contact-form label {
+  margin-top: 0.3rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--ink) 86%, white 14%);
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  border: 1px solid rgba(0, 52, 89, 0.22);
+  border-radius: 10px;
+  padding: 0.68rem 0.78rem;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--ink);
+}
+
+.contact-form textarea {
+  resize: vertical;
+}
+
 .reveal,
 .reveal-stagger > * {
   opacity: 0;
@@ -986,7 +1077,6 @@ body.is-ready .headline-accent {
 
   .hero-stats,
   .spotlight-wrap,
-  .service-grid,
   .gallery-grid,
   .story-grid,
   .contact-box,
@@ -998,6 +1088,38 @@ body.is-ready .headline-accent {
   .split-cards,
   .timeline {
     margin-top: 0.2rem;
+  }
+
+  .service-grid {
+    margin-top: 1.2rem;
+    display: flex;
+    gap: 0.72rem;
+    overflow-x: auto;
+    padding: 0.1rem 0.1rem 0.65rem;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 52, 89, 0.42) rgba(0, 52, 89, 0.12);
+  }
+
+  .service-grid::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .service-grid::-webkit-scrollbar-track {
+    background: rgba(0, 52, 89, 0.12);
+    border-radius: 999px;
+  }
+
+  .service-grid::-webkit-scrollbar-thumb {
+    background: rgba(0, 52, 89, 0.42);
+    border-radius: 999px;
+  }
+
+  .service-card {
+    flex: 0 0 clamp(220px, 70vw, 280px);
+    min-height: 74px;
+    scroll-snap-align: start;
   }
 
   .section-title,
@@ -1067,6 +1189,10 @@ body.is-ready .headline-accent {
     width: 100%;
   }
 
+  .service-card {
+    flex-basis: min(82vw, 280px);
+  }
+
   .headline {
     font-size: clamp(2.15rem, 12vw, 3.4rem);
     line-height: 1;
@@ -1123,6 +1249,10 @@ body.is-ready .headline-accent {
 
   .contact-meta a {
     width: 100%;
+  }
+
+  .contact-page-wrap {
+    grid-template-columns: 1fr;
   }
 
   .foot-wrap {
