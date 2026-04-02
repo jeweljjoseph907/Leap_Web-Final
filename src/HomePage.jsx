@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const services = [
@@ -62,6 +62,21 @@ const careGallery = [
   },
 ];
 
+const initialReviews = [
+  {
+    id: 1,
+    name: "Merin Thomas",
+    rating: 5,
+    message: "I could finally walk pain-free after my ankle injury. The sessions were focused and practical.",
+  },
+  {
+    id: 2,
+    name: "Rohan Mathew",
+    rating: 4,
+    message: "Excellent guidance and clear home exercises. I felt improvement in mobility every week.",
+  },
+];
+
 const handleImageError = (event) => {
   const img = event.currentTarget;
   if (img.dataset.fallbackApplied === "true") {
@@ -72,8 +87,34 @@ const handleImageError = (event) => {
 };
 
 function HomePage() {
+  const [reviews, setReviews] = useState(initialReviews);
+  const [reviewForm, setReviewForm] = useState({ name: "", rating: "5", message: "" });
+
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleReviewChange = (event) => {
+    const { name, value } = event.target;
+    setReviewForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleReviewSubmit = (event) => {
+    event.preventDefault();
+
+    const nextReview = {
+      id: Date.now(),
+      name: reviewForm.name.trim(),
+      rating: Number(reviewForm.rating),
+      message: reviewForm.message.trim(),
+    };
+
+    if (!nextReview.name || !nextReview.message) {
+      return;
+    }
+
+    setReviews((prev) => [nextReview, ...prev].slice(0, 8));
+    setReviewForm({ name: "", rating: "5", message: "" });
   };
 
   useEffect(() => {
@@ -573,6 +614,7 @@ function HomePage() {
           <div className="container">
             <p className="eyebrow reveal reveal-left" data-delay="130" data-duration="820">Patient Stories</p>
             <h2 className="section-title reveal reveal-up" data-delay="220" data-duration="980">Real Progress, Real Confidence</h2>
+            <p className="swipe-hint" aria-hidden="true">Swipe left to view more stories</p>
             <div className="story-grid reveal-stagger" data-delay="290" data-stagger="145" data-stagger-max="680">
               {patientStories.map((story) => (
                 <article className="story-card" key={story.name} data-duration="940">
@@ -582,6 +624,63 @@ function HomePage() {
                     <p className="story-quote">“{story.quote}”</p>
                     <p className="story-name">{story.name}</p>
                   </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section reviews flow-section" id="reviews">
+          <div className="container reviews-wrap">
+            <div className="reviews-header reveal reveal-left" data-delay="80" data-duration="860">
+              <p className="eyebrow">Patient Reviews</p>
+              <h2 className="section-title">Share Your Recovery Experience</h2>
+              <p>Your feedback helps future patients understand how LEAP supports real recovery journeys.</p>
+            </div>
+
+            <form className="review-form reveal reveal-up" data-delay="130" data-duration="880" onSubmit={handleReviewSubmit}>
+              <label htmlFor="review-name">Your name</label>
+              <input
+                id="review-name"
+                name="name"
+                type="text"
+                placeholder="Enter your name"
+                value={reviewForm.name}
+                onChange={handleReviewChange}
+                required
+              />
+
+              <label htmlFor="review-rating">Rating</label>
+              <select id="review-rating" name="rating" value={reviewForm.rating} onChange={handleReviewChange}>
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Very Good</option>
+                <option value="3">3 - Good</option>
+                <option value="2">2 - Fair</option>
+                <option value="1">1 - Poor</option>
+              </select>
+
+              <label htmlFor="review-message">Your review</label>
+              <textarea
+                id="review-message"
+                name="message"
+                rows="4"
+                placeholder="Tell us about your experience"
+                value={reviewForm.message}
+                onChange={handleReviewChange}
+                required
+              ></textarea>
+
+              <button type="submit" className="btn btn-primary">Submit Review</button>
+            </form>
+
+            <div className="review-list reveal-stagger" data-delay="170" data-stagger="110" data-stagger-max="420">
+              {reviews.map((review) => (
+                <article className="review-card" key={review.id}>
+                  <p className="review-name">{review.name}</p>
+                  <p className="review-stars" aria-label={`${review.rating} out of 5 stars`}>
+                    {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
+                  </p>
+                  <p className="review-message">"{review.message}"</p>
                 </article>
               ))}
             </div>
