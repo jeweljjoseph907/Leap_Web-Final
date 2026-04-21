@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const services = [
@@ -87,34 +87,17 @@ const handleImageError = (event) => {
 };
 
 function HomePage() {
-  const [reviews, setReviews] = useState(initialReviews);
-  const [reviewForm, setReviewForm] = useState({ name: "", rating: "5", message: "" });
+  const googleReviewUrl =
+    import.meta.env.VITE_GOOGLE_REVIEW_URL || "https://www.google.com/search?q=LEAP+physiotherapy+google+reviews";
+  const googleMapEmbedUrl =
+    import.meta.env.VITE_GOOGLE_MAP_EMBED_URL ||
+    "https://maps.google.com/maps?q=LEAP%20Physiotherapy&output=embed";
+  const googleDirectionsUrl =
+    import.meta.env.VITE_GOOGLE_MAP_DIRECTIONS_URL ||
+    "https://www.google.com/maps/search/?api=1&query=LEAP+Physiotherapy";
 
   const handleBackToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleReviewChange = (event) => {
-    const { name, value } = event.target;
-    setReviewForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleReviewSubmit = (event) => {
-    event.preventDefault();
-
-    const nextReview = {
-      id: Date.now(),
-      name: reviewForm.name.trim(),
-      rating: Number(reviewForm.rating),
-      message: reviewForm.message.trim(),
-    };
-
-    if (!nextReview.name || !nextReview.message) {
-      return;
-    }
-
-    setReviews((prev) => [nextReview, ...prev].slice(0, 8));
-    setReviewForm({ name: "", rating: "5", message: "" });
   };
 
   useEffect(() => {
@@ -638,43 +621,15 @@ function HomePage() {
               <p>Your feedback helps future patients understand how LEAP supports real recovery journeys.</p>
             </div>
 
-            <form className="review-form reveal reveal-up" data-delay="130" data-duration="880" onSubmit={handleReviewSubmit}>
-              <label htmlFor="review-name">Your name</label>
-              <input
-                id="review-name"
-                name="name"
-                type="text"
-                placeholder="Enter your name"
-                value={reviewForm.name}
-                onChange={handleReviewChange}
-                required
-              />
-
-              <label htmlFor="review-rating">Rating</label>
-              <select id="review-rating" name="rating" value={reviewForm.rating} onChange={handleReviewChange}>
-                <option value="5">5 - Excellent</option>
-                <option value="4">4 - Very Good</option>
-                <option value="3">3 - Good</option>
-                <option value="2">2 - Fair</option>
-                <option value="1">1 - Poor</option>
-              </select>
-
-              <label htmlFor="review-message">Your review</label>
-              <textarea
-                id="review-message"
-                name="message"
-                rows="4"
-                placeholder="Tell us about your experience"
-                value={reviewForm.message}
-                onChange={handleReviewChange}
-                required
-              ></textarea>
-
-              <button type="submit" className="btn btn-primary">Submit Review</button>
-            </form>
+            <div className="review-form reveal reveal-up" data-delay="130" data-duration="880">
+              <p>We would love to hear about your recovery experience.</p>
+              <a href={googleReviewUrl} target="_blank" rel="noreferrer" className="btn btn-primary">
+                Leave a Google Review
+              </a>
+            </div>
 
             <div className="review-list reveal-stagger" data-delay="170" data-stagger="110" data-stagger-max="420">
-              {reviews.map((review) => (
+              {initialReviews.map((review) => (
                 <article className="review-card" key={review.id}>
                   <p className="review-name">{review.name}</p>
                   <p className="review-stars" aria-label={`${review.rating} out of 5 stars`}>
@@ -683,6 +638,31 @@ function HomePage() {
                   <p className="review-message">"{review.message}"</p>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="section location-map flow-section" id="location">
+          <div className="container location-wrap">
+            <div className="location-copy reveal reveal-left" data-delay="80" data-duration="860">
+              <p className="eyebrow">Visit Our Clinic</p>
+              <h2 className="section-title">Find LEAP On The Map</h2>
+              <p>
+                Plan your visit easily. Tap below to open directions and reach our clinic without hassle.
+              </p>
+              <a href={googleDirectionsUrl} target="_blank" rel="noreferrer" className="btn btn-primary">
+                Get Directions
+              </a>
+            </div>
+
+            <div className="location-frame reveal reveal-up" data-delay="140" data-duration="900">
+              <iframe
+                src={googleMapEmbedUrl}
+                title="LEAP clinic location map"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              ></iframe>
             </div>
           </div>
         </section>
